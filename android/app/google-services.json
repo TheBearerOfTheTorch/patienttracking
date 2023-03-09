@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1048735671855",
+    "project_id": "patienttracking-97a81",
+    "storage_bucket": "patienttracking-97a81.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048735671855:android:726527cc2673cc8fa6c8da",
+        "android_client_info": {
+          "package_name": "com.google.firebase.presents.patienttracking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1048735671855-1p73ui2v6ca2u1t58rstekmgc8hs7dpa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwX1yXhdUhALRndfjHlF9kC6Qa57DfwZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1048735671855-1p73ui2v6ca2u1t58rstekmgc8hs7dpa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
