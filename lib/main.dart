@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,26 +13,43 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const PatientTracking());
+  runApp(PatientTracking());
 }
 
 class PatientTracking extends StatelessWidget {
-  const PatientTracking({super.key});
+  PatientTracking({super.key});
+  final _appStateManager = AppStateManager();
+  final _fieldStateManager = FieldStateManager();
+  late AppRouter _appRouter;
+
+  @override
+  void initState() {
+    _appRouter = AppRouter(
+      appStateManager: _appStateManager,
+      fieldsStateManager: _fieldStateManager,
+    );
+  }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [Provider<ChangeNotifier>(create: (_) => appStateManager)],
-      child: MaterialApp.router(
+      providers: [
+        ChangeNotifierProvider<FieldStateManager>(
+            create: (context) => _fieldStateManager),
+        Provider<ChangeNotifier>(create: (context) => appStateManager),
+        StreamProvider<User?>.value(
+          value: _appStateManager.user,
+          initialData: null,
+        ),
+      ],
+      child: MaterialApp(
         title: 'patienttracking',
         theme: AppThemeData.light(),
-        routerDelegate: router.routerDelegate,
-        routeInformationParser: router.routeInformationParser,
-        supportedLocales: const [
-          Locale('en', 'US'),
-          Locale('fr', 'CH'),
-        ],
+        home: Router(
+          routerDelegate: _appRouter,
+          backButtonDispatcher: RootBackButtonDispatcher(),
+        ),
       ),
     );
   }
