@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:patienttracking/navigation/navigation.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../managers/managers.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
-  final _formKey = GlobalKey<FormState>();
-  bool isLoadingRequired = false;
 
   static Page page({LocalKey? key}) {
     return MaterialPage(key: key, child: LoginScreen());
   }
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+
+  bool isLoadingRequired = false;
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +91,7 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: 40,
                       child: MaterialButton(
+                        color: Colors.red,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0)),
                         child: const Text(
@@ -91,8 +101,9 @@ class LoginScreen extends StatelessWidget {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             //start loading spinner
-                            isLoadingRequired = true;
-
+                            setState(() {
+                              isLoadingRequired = true;
+                            });
                             //log in and get error
                             var errorValue =
                                 await appStateManager.signInWithEmail(
@@ -109,7 +120,9 @@ class LoginScreen extends StatelessWidget {
                               //updating loggin state
                               appStateManager.loggedIn();
                             }
-                            isLoadingRequired = false;
+                            setState(() {
+                              isLoadingRequired = false;
+                            });
                           }
                         },
                       ),
@@ -123,7 +136,9 @@ class LoginScreen extends StatelessWidget {
                     _keyboardIsVisible(context)
                         ? const Text("")
                         : TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              GoRouter.of(context).go(Routes.register.path);
+                            },
                             child: const Text(
                               "Create a new account",
                               style: TextStyle(color: Colors.green),

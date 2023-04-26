@@ -9,6 +9,10 @@ class SignupScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   bool isLoadingRequired = false;
 
+  static Page page({LocalKey? key}) {
+    return MaterialPage(key: key, child: SignupScreen());
+  }
+
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AppStateManager>(context);

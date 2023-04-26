@@ -74,6 +74,65 @@ class AppStateManager extends ChangeNotifier {
     notifyListeners();
   }
 
+  //updating appointment
+  Future updateAppointment({
+    required bool appointmentUpdate,
+    required String userId,
+    required String appointmentId,
+  }) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('appointment')
+          .doc(appointmentId)
+          .update({
+        'updatedTime': 'not updated',
+        'updatedDate': 'not updated',
+        'appointmentUpdate': appointmentUpdate,
+        'notification': true,
+      });
+    } catch (e) {}
+  }
+
+  Future makeAppointment({doctorName, time, date, meetFor, patientName}) async {
+    //user
+    final User? user = FirebaseAuth.instance.currentUser;
+    //int notificaiton =+ 1;
+
+    try {
+      await _firestore
+          .collection('users')
+          .doc(user!.uid)
+          .collection('appointment')
+          .add({
+        'doctorName': doctorName,
+        'time': time,
+        'date': date,
+        'meetingFor': meetFor,
+        'notification': false,
+        'updatedTime': '',
+        'updatedDate': '',
+        'appointmentUpdate': '',
+      }).then((value) {
+        final docId = value.id;
+        _firestore.collection('appointment').add({
+          'patientName': patientName,
+          'time': time,
+          'date': date,
+          'meetingFor': meetFor,
+          'appointmentId': docId,
+          'patientId': user.uid,
+          'diagnosis': '',
+          'updatedTime': '',
+          'updatedDate': '',
+          'appointmentUpdate': '',
+          'notification': true
+        });
+      });
+    } catch (e) {}
+  }
+
   //email and password sign up
   Future signUpWithEmail(
       {required firstname,
@@ -100,6 +159,17 @@ class AppStateManager extends ChangeNotifier {
           }).whenComplete(() {
             //check if the email is verified
             user.sendEmailVerification();
+            _firestore
+                .collection('users')
+                .doc(user.uid)
+                .collection('profile')
+                .doc(user.uid)
+                .set({
+              'name': '$firstname $lastname',
+              'profession': '',
+              'hospital': '',
+              'doctorId': user.uid
+            });
           });
         } else {
           print("theres no  users created");

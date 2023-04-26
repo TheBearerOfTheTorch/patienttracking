@@ -19,16 +19,6 @@ Future<void> main() async {
 class PatientTracking extends StatelessWidget {
   PatientTracking({super.key});
   final _appStateManager = AppStateManager();
-  final _fieldStateManager = FieldStateManager();
-  late AppRouter _appRouter;
-
-  @override
-  void initState() {
-    _appRouter = AppRouter(
-      appStateManager: _appStateManager,
-      fieldsStateManager: _fieldStateManager,
-    );
-  }
 
   // This widget is the root of your application.
   @override
@@ -36,19 +26,20 @@ class PatientTracking extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<FieldStateManager>(
-            create: (context) => _fieldStateManager),
-        Provider<ChangeNotifier>(create: (context) => appStateManager),
+            create: (context) => FieldStateManager()),
+        Provider<ChangeNotifier>(create: (context) => AppStateManager()),
         StreamProvider<User?>.value(
           value: _appStateManager.user,
           initialData: null,
         ),
       ],
-      child: MaterialApp(
-        title: 'patienttracking',
-        theme: AppThemeData.light(),
-        home: Router(
-          routerDelegate: _appRouter,
-          backButtonDispatcher: RootBackButtonDispatcher(),
+      child: Material(
+        child: MaterialApp.router(
+          title: 'patienttracking',
+          theme: AppThemeData.light(),
+          debugShowCheckedModeBanner: false,
+          routerDelegate: router.routerDelegate,
+          routeInformationParser: router.routeInformationParser,
         ),
       ),
     );
