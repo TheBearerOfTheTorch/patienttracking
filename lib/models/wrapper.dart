@@ -1,39 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-<<<<<<< Updated upstream
 import 'package:patienttracking/shared_components/shared_components.dart';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import 'package:provider/provider.dart';
 
 import '../../navigation/navigation.dart';
 
-=======
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-
->>>>>>> Stashed changes
 class Wrapper extends StatefulWidget {
   static MaterialPage page({LocalKey? key}) {
     return MaterialPage(key: key, child: Wrapper());
@@ -45,13 +17,10 @@ class Wrapper extends StatefulWidget {
 
 class _WrapperState extends State<Wrapper> {
   bool isToggle = false;
-<<<<<<< Updated upstream
   @override
   void initState() {
     super.initState();
   }
-=======
->>>>>>> Stashed changes
 
   @override
   Widget build(BuildContext context) {
@@ -72,11 +41,7 @@ class _WrapperState extends State<Wrapper> {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData && snapshot.data != null) {
-<<<<<<< Updated upstream
                         return HomeScreen();
-=======
-                        checkingRole(user);
->>>>>>> Stashed changes
                       }
                       if (snapshot.hasError) {
                         return const Text("An unknown error has occured !");
@@ -89,11 +54,7 @@ class _WrapperState extends State<Wrapper> {
               }
             }
           }
-<<<<<<< Updated upstream
           return LoginScreen();
-=======
-          return LandingPage();
->>>>>>> Stashed changes
         });
   }
 
@@ -103,36 +64,7 @@ class _WrapperState extends State<Wrapper> {
     });
   }
 
-<<<<<<< Updated upstream
-//   checkingRole(User? user, context) async {
-//     String role = 'user';
-//     if (user != null) {
-//       final DocumentSnapshot snap = await FirebaseFirestore.instance
-//           .collection("users")
-//           .doc(user.uid)
-//           .get();
-
-//       setState(() {
-//         role = snap['userRole'];
-//       });
-//       print(role);
-//       Provider.of<StateManager>(context).userRole(role);
-
-//       if (role == 'investigator') {
-//         //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const Home()));
-//         return Routes.counsels.path;
-//       }
-
-//       if (role == 'user') {
-//         //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const Home()));
-//         return Routes.home.path;
-//       }
-//     }
-//     return LandingPage();
-//   }
-}
-=======
-  checkingRole(User? user) async {
+  checkingRole(User? user, context) async {
     String role = 'user';
     if (user != null) {
       final DocumentSnapshot snap = await FirebaseFirestore.instance
@@ -140,23 +72,21 @@ class _WrapperState extends State<Wrapper> {
           .doc(user.uid)
           .get();
 
-      if (snap['userRole'] == 'user') {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const Home()));
-        //return Routes.home.path;
-      }
+      setState(() {
+        role = snap['userRole'];
+      });
+      print(role);
 
-      if (snap['userRole'] == 'admin') {
+      if (role == 'doctor') {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const AdminPage()));
+            MaterialPageRoute(builder: (context) => const DoctorPage()));
       }
 
-      if (snap['userRole'] == 'investigator') {
+      if (role == 'user') {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Counselor()));
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
       }
     }
     return LoginScreen();
   }
 }
->>>>>>> Stashed changes
