@@ -19,15 +19,26 @@ Future<void> main() async {
 class PatientTracking extends StatelessWidget {
   PatientTracking({super.key});
   final _appStateManager = AppStateManager();
+<<<<<<< Updated upstream
+=======
+  final _fieldStateManager = FieldStateManager();
+  late AppRouter _appRouter;
+>>>>>>> Stashed changes
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+<<<<<<< Updated upstream
         ChangeNotifierProvider<FieldStateManager>(
             create: (context) => FieldStateManager()),
         Provider<ChangeNotifier>(create: (context) => AppStateManager()),
+=======
+        ChangeNotifierProvider(
+            create: (context) => _fieldStateManager),
+        ChangeNotifierProvider(create: (context) => appStateManager),
+>>>>>>> Stashed changes
         StreamProvider<User?>.value(
           value: _appStateManager.user,
           initialData: null,
