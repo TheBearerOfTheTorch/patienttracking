@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:patienttracking/navigation/navigation.dart';
 import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../managers/managers.dart';
+import '../shared_components.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   static Page page({LocalKey? key}) {
-    return MaterialPage(key: key, child: LoginScreen());
+    return MaterialPage(key: key, child: const LoginScreen());
   }
 
   @override
@@ -23,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _fieldStateManager = Provider.of<FieldStateManager>(context);
+    final fieldStateManager = Provider.of<FieldStateManager>(context);
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -39,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     TextFormField(
-                      controller: _fieldStateManager.emailController,
+                      controller: fieldStateManager.emailController,
                       validator: (value) {
                         if (value!.isEmpty) {
                           Provider.of<FieldStateManager>(context, listen: false)
@@ -49,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Provider.of<FieldStateManager>(context, listen: false)
                               .emailFilled = true;
                         }
+                        return null;
                       },
                       decoration: InputDecoration(
                         focusedBorder: const OutlineInputBorder(
@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: MediaQuery.of(context).size.height / 30),
                     TextFormField(
-                      controller: _fieldStateManager.passwordController,
+                      controller: fieldStateManager.passwordController,
                       validator: (value) {
                         if (value!.isEmpty) {
                           Provider.of<FieldStateManager>(context, listen: false)
@@ -74,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Provider.of<FieldStateManager>(context, listen: false)
                               .passwordFilled = true;
                         }
+                        return null;
                       },
                       obscureText: true,
                       decoration: InputDecoration(
@@ -108,8 +109,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             var errorValue =
                                 await appStateManager.signInWithEmail(
                                     email:
-                                        _fieldStateManager.emailController.text,
-                                    password: _fieldStateManager
+                                        fieldStateManager.emailController.text,
+                                    password: fieldStateManager
                                         .passwordController.text);
 
                             //check error
@@ -137,7 +138,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         ? const Text("")
                         : TextButton(
                             onPressed: () {
-                              GoRouter.of(context).go(Routes.register.path);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SignupScreen()),
+                              );
                             },
                             child: const Text(
                               "Create a new account",

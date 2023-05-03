@@ -3,34 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:patienttracking/shared_components/shared_components.dart';
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import 'package:provider/provider.dart';
 
-import '../../navigation/navigation.dart';
 
 class Wrapper extends StatefulWidget {
+  const Wrapper({super.key});
+
   static MaterialPage page({LocalKey? key}) {
-    return MaterialPage(key: key, child: Wrapper());
+    return MaterialPage(key: key, child: const Wrapper());
   }
 
   @override
@@ -63,7 +43,7 @@ class _WrapperState extends State<Wrapper> {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData && snapshot.data != null) {
-                        return HomeScreen();
+                        checkingRole(user, context);
                       }
                       if (snapshot.hasError) {
                         return const Text("An unknown error has occured !");
@@ -76,7 +56,7 @@ class _WrapperState extends State<Wrapper> {
               }
             }
           }
-          return LoginScreen();
+          return const LoginScreen();
         });
   }
 
@@ -86,30 +66,31 @@ class _WrapperState extends State<Wrapper> {
     });
   }
 
-//   checkingRole(User? user, context) async {
-//     String role = 'user';
-//     if (user != null) {
-//       final DocumentSnapshot snap = await FirebaseFirestore.instance
-//           .collection("users")
-//           .doc(user.uid)
-//           .get();
+  checkingRole(User? user, context) async {
+    String role = 'user';
+    if (user != null) {
+      final DocumentSnapshot snap = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(user.uid)
+          .get();
 
-//       setState(() {
-//         role = snap['userRole'];
-//       });
-//       print(role);
-//       Provider.of<StateManager>(context).userRole(role);
+      setState(() {
+        role = snap['userRole'];
+      });
+      print(role);
 
-//       if (role == 'investigator') {
-//         //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const Home()));
-//         return Routes.counsels.path;
-//       }
+      if (role == 'doctor') {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const DoctorPage()));
+        //return Routes.counsels.path;
+      }
 
-//       if (role == 'user') {
-//         //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const Home()));
-//         return Routes.home.path;
-//       }
-//     }
-//     return LandingPage();
-//   }
+      if (role == 'user') {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        //return Routes.home.path;
+      }
+    }
+    return const LoginScreen();
+  }
 }

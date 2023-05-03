@@ -1,3 +1,4 @@
+import '../models/models.dart';
 import '../shared_components/shared_components.dart';
 import 'package:go_router/go_router.dart';
 
@@ -6,6 +7,11 @@ class Routes {
       path: '/',
       pageBuilder: (context, state) {
         return HomeScreen.page(key: state.pageKey);
+      });
+  static final wrapper = GoRoute(
+      path: '/server',
+      pageBuilder: (context, state) {
+        return Wrapper.page(key: state.pageKey);
       });
   static final doctorPage = GoRoute(
       path: '/doctor',

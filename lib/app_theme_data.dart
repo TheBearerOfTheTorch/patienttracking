@@ -16,7 +16,7 @@ class AppThemeData {
       displayMedium: GoogleFonts.openSans(
         fontSize: 21.0,
         fontWeight: FontWeight.w700,
-        color: Color.fromRGBO(0, 0, 0, 1),
+        color: const Color.fromRGBO(0, 0, 0, 1),
       ),
       displaySmall: GoogleFonts.openSans(
         fontSize: 16.0,

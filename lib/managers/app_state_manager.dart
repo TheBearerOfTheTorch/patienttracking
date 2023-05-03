@@ -56,7 +56,7 @@ class AppStateManager extends ChangeNotifier {
   bool _registerWithEmail = false;
   bool _emailVerified = false;
   final bool _authLoading = false;
-  bool _loggedWithEmail = false;
+  final bool _loggedWithEmail = false;
 
   bool get registerWithEmail => _registerWithEmail;
   bool get emailVerified => _emailVerified;
